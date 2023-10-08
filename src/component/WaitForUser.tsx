@@ -1,3 +1,5 @@
+"use client"
+
 import React, { useContext, ReactNode } from "react"; 
 import { UserContext } from "./UserContext";
 

@@ -1,3 +1,5 @@
+"use client"
+
 import React, { useEffect, useState, useRef, createContext, useMemo, ReactNode } from "react";
 
 type V = any | null;
@@ -10,17 +12,47 @@ export const UserContext = createContext<{
     setUser: () => {}
 });
 
+function getCookie(cookieName: string) {
+    const name = `${cookieName}=`;
+    const decodedCookie = decodeURIComponent(document.cookie);
+    const cookieArray = decodedCookie.split(';');
+    
+    for (let i = 0; i < cookieArray.length; i++) {
+        let cookie = cookieArray[i];
+        while (cookie.charAt(0) === ' ') {
+        cookie = cookie.substring(1);
+        }
+        if (cookie.indexOf(name) === 0) {
+        return cookie.substring(name.length, cookie.length);
+        }
+    }
+    return null;
+    }
 
+  
+// 
 const getUser = (url: string) => 
     new Promise((resolve, reject) => {
-        fetch(url)
+        fetch(url, {
+            method: 'GET', 
+            headers: new Headers({
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${getCookie('hanko')}`
+              })
+          })
             .then((response) => {
                 if (!response.ok) {
                     reject(new Error(`Failed to fetch data from ${url}: ${response.status}`));
                 } else {
                     response.json()
                         .then((data) => {
-                            return fetch(`${process.env.NEXT_PUBLIC_HANKO_API_URL}/users/${data.id}`);
+                            return fetch(`${process.env.NEXT_PUBLIC_HANKO_API_URL}/users/${data.id}`, {
+                                method: 'GET', 
+                                headers: new Headers({
+                                    'Content-Type': 'application/json',
+                                    'Authorization': `Bearer ${getCookie('hanko')}`
+                                  })
+                              });
                         })
                         .then((response) => {
                             if (!response.ok) {
@@ -49,14 +81,14 @@ const getUser = (url: string) =>
 export const UserProvider = ({ children }: { children: ReactNode }) => {
     const [user, setUser] = useState(null);
     const isLoading = useRef(false);
-    
-    const url = "";
 
     useEffect(() =>{
         if (!user) {
             console.log("getting user details from hanko")
+            console.log(getCookie('hanko'))
             getUser(`${process.env.NEXT_PUBLIC_HANKO_API_URL}/me`)
             .then((userr: any) => {
+                console.log(userr)
                 setUser(userr)
             })
             .catch((err) => {
