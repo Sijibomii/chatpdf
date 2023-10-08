@@ -27,10 +27,8 @@ function getCookie(cookieName: string) {
         }
     }
     return null;
-    }
+}
 
-  
-// 
 const getUser = (url: string) => 
     new Promise((resolve, reject) => {
         fetch(url, {
