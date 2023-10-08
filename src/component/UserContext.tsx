@@ -1,7 +1,7 @@
 "use client"
 
 import React, { useEffect, useState, useRef, createContext, useMemo, ReactNode } from "react";
-
+import { useUserStore } from "@/lib/userStore";
 type V = any | null;
 
 export const UserContext = createContext<{
@@ -88,6 +88,8 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
             .then((userr: any) => {
                 console.log(userr)
                 setUser(userr)
+                // set zustand here
+                useUserStore.getState().setUser(userr)
             })
             .catch((err) => {
                 console.log(err)

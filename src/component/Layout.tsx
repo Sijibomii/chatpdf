@@ -1,3 +1,5 @@
+"use client"
+
 import { ReactNode } from 'react';
 import { WaitForUser } from "./WaitForUser"
 import { UserProvider } from "./UserContext"
@@ -8,7 +10,7 @@ export default function Layout({ children }: { children: ReactNode }) {
         <div className="body">
             <UserProvider>
                 <WaitForUser>
-                    {children}
+                    {children} 
                 </WaitForUser>
             </UserProvider>
         </div>
