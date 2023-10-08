@@ -5,7 +5,7 @@ import { UserProvider } from "./UserContext"
 
 export default function Layout({ children }: { children: ReactNode }) {
     return (
-        <div className="body ">
+        <div className="body">
             <UserProvider>
                 <WaitForUser>
                     {children}

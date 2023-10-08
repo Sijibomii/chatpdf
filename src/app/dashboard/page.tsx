@@ -1,10 +1,10 @@
-import Layout from "@/component/Layout"
+import PageLayout from "@/component/PageLayout";
 
-
-export default function Group() {
+// post should go in here
+export default function Dash() {
   return (
-      <Layout>
-        
-      </Layout>
+      <PageLayout>
+
+      </PageLayout>
   )
 }

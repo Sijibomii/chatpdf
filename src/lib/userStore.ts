@@ -1,7 +1,7 @@
 import {create} from "zustand";
 import { combine } from "zustand/middleware";
 
-
+// user coming from superbase
 export const useUserStore = create(
     combine(
       {
