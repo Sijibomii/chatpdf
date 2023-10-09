@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/lib/initSupabase";
 
 import { useUserStore, useUserDataStore } from "@/lib/userStore";
+import Onboarding from "@/component/Onboarding";
 
 // post should go in here
 export default function Dash() {
@@ -25,19 +26,20 @@ export default function Dash() {
           if (userData) {
             useUserDataStore.getState().setUser(userData)
             setUserData(userData)
-            console.log(userData)
           }
         }
     }
     if(user){
-      console.log(user)
       fetchUser()
     }
   },[user])
   return (
     <PageLayout>
-    { userDta == null || userDta.length == 0 ? ( <>loadings...</>) : ( 
-          <p>hello world</p>
+    { userDta == null || userDta.length == 0 ? ( 
+      <Onboarding />
+    ) : ( 
+      <Onboarding />
+          // <p>hello world</p>
         )}
     </PageLayout>
   

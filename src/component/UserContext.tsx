@@ -2,6 +2,8 @@
 
 import React, { useEffect, useState, useRef, createContext, useMemo, ReactNode } from "react";
 import { useUserStore } from "@/lib/userStore";
+import { useRouter } from "next/navigation";
+
 type V = any | null;
 
 export const UserContext = createContext<{
@@ -39,7 +41,12 @@ const getUser = (url: string) =>
               })
           })
             .then((response) => {
+                if (response.status === 401){
+                    const router = useRouter();
+                    router.replace("/");
+                }
                 if (!response.ok) {
+                    
                     reject(new Error(`Failed to fetch data from ${url}: ${response.status}`));
                 } else {
                     response.json()
@@ -83,10 +90,8 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     useEffect(() =>{
         if (!user) {
             console.log("getting user details from hanko")
-            console.log(getCookie('hanko'))
             getUser(`${process.env.NEXT_PUBLIC_HANKO_API_URL}/me`)
             .then((userr: any) => {
-                console.log(userr)
                 setUser(userr)
                 // set zustand here
                 useUserStore.getState().setUser(userr)
