@@ -12,7 +12,7 @@ export async function uploadToS3(
             projectId: "winged-ratio-399207"
         });
 
-        const bucket = storage.bucket('');
+        const bucket = storage.bucket('hanko-sijibomi-pdf');
 
         const file_key = `uploads/${Date.now().toString()}-${file.name}`;
 
