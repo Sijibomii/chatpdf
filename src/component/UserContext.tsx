@@ -94,6 +94,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
             .then((userr: any) => {
                 setUser(userr)
                 // set zustand here
+                console.log(userr)
                 useUserStore.getState().setUser(userr)
             })
             .catch((err) => {

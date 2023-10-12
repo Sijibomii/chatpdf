@@ -9,12 +9,23 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.427.0",
+    "@google-cloud/storage": "^7.2.0",
+    "@radix-ui/react-slot": "^1.0.2",
     "@supabase/supabase-js": "^2.38.0",
+    "@tanstack/react-query": "^4.36.1",
     "@teamhanko/hanko-elements": "^0.8.3",
+    "class-variance-authority": "^0.7.0",
+    "clsx": "^2.0.0",
     "formik": "^2.4.5",
+    "lucide-react": "^0.286.0",
     "next": "13.5.4",
     "react": "^18",
     "react-dom": "^18",
+    "react-dropzone": "^14.2.3",
+    "react-hot-toast": "^2.4.1",
+    "tailwind-merge": "^1.14.0",
+    "tailwindcss-animate": "^1.0.7",
     "zustand": "^4.4.3"
   },
   "devDependencies": {
