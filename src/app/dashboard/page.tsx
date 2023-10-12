@@ -8,8 +8,6 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { ArrowRight, LogIn } from "lucide-react";
 import FileUpload from "@/component/FileUpload";
-// import { db } from "@/lib/db";
-// import { chats } from "@/lib/db/schema";
 
 // post should go in here
 export default function Dash() {
@@ -91,7 +89,7 @@ export default function Dash() {
           </p>
 
           <div className="w-full mt-4">
-              {/* <FileUpload /> */}
+              <FileUpload />
           </div>
         </div>
       </div>

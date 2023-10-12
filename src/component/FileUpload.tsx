@@ -1,4 +1,5 @@
 "use client";
+
 import { uploadToS3 } from "@/lib/s3";
 import { useMutation } from "@tanstack/react-query";
 import { Inbox, Loader2 } from "lucide-react";
@@ -8,8 +9,10 @@ import { toast } from "react-hot-toast";
 import { useRouter } from "next/navigation";
 
 const FileUpload = () => {
+
   const router = useRouter();
   const [uploading, setUploading] = React.useState(false);
+
   const { mutate, isLoading } = useMutation({
     mutationFn: async ({
       file_key,
@@ -18,11 +21,25 @@ const FileUpload = () => {
       file_key: string;
       file_name: string;
     }) => {
-    //   const response = await axios.post("/api/create-chat", {
-    //     file_key,
-    //     file_name,
-    //   });
-    //   return response.data;
+    
+        const response = await fetch("/api/create-chat", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                file_key,
+                file_name,
+              }),
+          });
+          if (!response.ok) {
+            // Handle the error (e.g., throw an error or return an error response)
+            throw new Error("Network response was not ok");
+          }
+          
+          const responseData = await response.json();
+          return responseData;
+      
     },
   });
 
@@ -39,7 +56,27 @@ const FileUpload = () => {
 
       try {
         setUploading(true);
-        const data = await uploadToS3(file);
+        const formData = new FormData();
+        formData.append("file", file);
+
+        const data: any = fetch("/api/upload", {
+                method: "POST",
+                body: formData, 
+            })
+            .then((response) => {
+              if (!response.ok) {
+                throw new Error("Network response was not ok");
+              }
+              return response.json(); 
+            })
+            .then((data) => {
+                console.log("File uploaded successfully:", data);
+                return data
+              })
+            .catch((error) => {
+              console.error("Error uploading file:", error);
+            });
+
         console.log("meow", data);
         if (!data?.file_key || !data.file_name) {
           toast.error("Something went wrong");
@@ -66,9 +103,9 @@ const FileUpload = () => {
     <div className="p-2 bg-white rounded-xl">
       <div
         {...getRootProps({
-          className:
-            "border-dashed border-2 rounded-xl cursor-pointer bg-gray-50 py-8 flex justify-center items-center flex-col",
-        })}
+            className:
+              "border-dashed border-2 rounded-xl cursor-pointer bg-gray-50 py-8 flex justify-center items-center flex-col",
+          })}
       >
         <input {...getInputProps()} />
         {uploading || isLoading ? (

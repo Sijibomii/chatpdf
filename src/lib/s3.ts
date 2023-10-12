@@ -1,12 +1,11 @@
 import { Storage } from "@google-cloud/storage";
 import path from "path";
 
-export async function uploadToS3(
+export async function uploadToGoogleStorage(
   file: File
 ): Promise<{ file_key: string; file_name: string }> {
   return new Promise((resolve, reject) => {
     try {
-
         const storage = new Storage({
             keyFilename: path.join(__dirname, '../secrets/winged-ratio-399207-4bc090accd94.json'),
             projectId: "winged-ratio-399207"
@@ -32,9 +31,14 @@ export async function uploadToS3(
         });
 
         fileStream.end(file.buffer);
+
     } catch (error) {
       reject(error);
     }
   });
 }
 
+export function getGoogleStorage(file_key: string) {
+    const url = `https://storage.googleapis.com/${'hanko-sijibomi-pdf'}/${file_key}`;
+    return url;
+  }

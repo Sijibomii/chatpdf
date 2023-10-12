@@ -1,6 +1,5 @@
 import { Pinecone, PineconeRecord } from "@pinecone-database/pinecone";
 import { downloadFromGoogleCloudStorage } from "./storage";
-// cont...
 import { PDFLoader } from "langchain/document_loaders/fs/pdf";
 import md5 from "md5";
 import {
@@ -24,24 +23,23 @@ type PDFPage = {
   };
 };
 
-export async function loadS3IntoPinecone(fileKey: string) {
-  // 1. obtain the pdf -> downlaod and read from pdf
-  console.log("downloading s3 into file system");
+export async function loadGoogleCloudStorageIntoPinecone(fileKey: string) {
+  console.log("downloading from GoogleCloudStorage into file system");
   const file_name = await downloadFromGoogleCloudStorage(fileKey);
   if (!file_name) {
-    throw new Error("could not download from s3");
+    throw new Error("could not download from google cloud");
   }
   console.log("loading pdf into memory" + file_name);
   const loader = new PDFLoader(file_name);
   const pages = (await loader.load()) as PDFPage[];
 
-  // 2. split and segment the pdf
+  // spliting pdf into segments
   const documents = await Promise.all(pages.map(prepareDocument));
 
-  // 3. vectorise and embed individual documents
+  // vectorise and embed individual documents
   const vectors = await Promise.all(documents.flat().map(embedDocument));
 
-  // 4. upload to pinecone
+  // upload to pinecone
   const client = await getPineconeClient();
   const pineconeIndex = await client.index("chatpdf");
   const namespace = pineconeIndex.namespace(convertToAscii(fileKey));
