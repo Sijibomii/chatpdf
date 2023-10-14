@@ -1,13 +1,14 @@
 import { Storage } from "@google-cloud/storage";
 import path from "path";
+import { Readable } from "stream";
 
 export async function uploadToGoogleStorage(
-  file: File
+  file: Blob
 ): Promise<{ file_key: string; file_name: string }> {
-  return new Promise((resolve, reject) => {
+  return new Promise(async (resolve, reject) => {
     try {
         const storage = new Storage({
-            keyFilename: path.join(__dirname, '../secrets/winged-ratio-399207-4bc090accd94.json'),
+            keyFilename: path.join(__dirname, '../../../../../src/secrets/winged-ratio-399207-4bc090accd94.json'),
             projectId: "winged-ratio-399207"
         });
 
@@ -19,6 +20,10 @@ export async function uploadToGoogleStorage(
             resumable: false,
         });
 
+        // console.log(file.buffer)
+        const arrayBuffer = await new Response(file).arrayBuffer();
+        const fileBuffer = Buffer.from(arrayBuffer);
+
         fileStream
         .on('error', (error: any) => {
             reject(error);
@@ -29,8 +34,8 @@ export async function uploadToGoogleStorage(
             file_name: file.name,
             });
         });
-
-        fileStream.end(file.buffer);
+      
+        fileStream.end(fileBuffer);
 
     } catch (error) {
       reject(error);

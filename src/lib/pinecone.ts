@@ -24,7 +24,9 @@ type PDFPage = {
 };
 
 export async function loadGoogleCloudStorageIntoPinecone(fileKey: string) {
+
   console.log("downloading from GoogleCloudStorage into file system");
+  
   const file_name = await downloadFromGoogleCloudStorage(fileKey);
   if (!file_name) {
     throw new Error("could not download from google cloud");
@@ -42,10 +44,11 @@ export async function loadGoogleCloudStorageIntoPinecone(fileKey: string) {
   // upload to pinecone
   const client = await getPineconeClient();
   const pineconeIndex = await client.index("chatpdf");
-  const namespace = pineconeIndex.namespace(convertToAscii(fileKey));
-
+  // namspaces are not free
+  // const namespace = pineconeIndex.namespace(convertToAscii(fileKey));
+  // await namespace.upsert(vectors);
   console.log("inserting vectors into pinecone");
-  await namespace.upsert(vectors);
+  await pineconeIndex.upsert(vectors);
 
   return documents[0];
 }

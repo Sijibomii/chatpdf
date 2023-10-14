@@ -23,14 +23,14 @@ export async function POST(req: Request, res: Response) {
     const { data: chatData, error } = await supabase
             .from('chats')
             .insert({
-                    fileKey: file_key,
-                    pdfName: file_name, 
-                    pdfUrl: getGoogleStorage(file_key),
-                    userId,
+                    file_key: file_key,
+                    pdf_name: file_name, 
+                    pdf_url: getGoogleStorage(file_key),
+                    user_id: userId,
                   })
             .select()
             .single();
-
+    console.log(chatData)
     return NextResponse.json(
       {
         chat_id: chatData.id,

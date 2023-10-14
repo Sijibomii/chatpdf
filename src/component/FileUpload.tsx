@@ -56,12 +56,12 @@ const FileUpload = () => {
 
       try {
         setUploading(true);
-        const formData = new FormData();
-        formData.append("file", file);
-
-        const data: any = fetch("/api/upload", {
+        const formData = new FormData(); 
+        formData.set("file", file);
+        console.log(file)
+        const data: any = await fetch("/api/upload", {
                 method: "POST",
-                body: formData, 
+                body: formData,   
             })
             .then((response) => {
               if (!response.ok) {
