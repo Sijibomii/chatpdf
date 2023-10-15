@@ -12,20 +12,28 @@ const config = new Configuration({
 const openai = new OpenAIApi(config);
 
 export async function POST(req: Request) {
-  try {
+  try { 
+
     const { messages, chatId } = await req.json();
-    const _chats =  await supabase
+   
+
+    const __chats =  await supabase
     .from('chats')
     .select('*')
     .eq('id', chatId);
+
+    const _chats = __chats.data
 
     if (_chats.length != 1) {
       return NextResponse.json({ error: "chat not found" }, { status: 404 });
     }
     const fileKey = _chats[0].fileKey;
+    ///
     const lastMessage = messages[messages.length - 1];
-    const context = await getContext(lastMessage.content, fileKey);
 
+    const context = await getContext(lastMessage.content, fileKey);
+    
+    
     const prompt = {
       role: "system",
       content: `AI assistant is a brand new, powerful, human-like artificial intelligence.
@@ -79,5 +87,6 @@ export async function POST(req: Request) {
       },
     });
     return new StreamingTextResponse(stream);
+
   } catch (error) {}
 }

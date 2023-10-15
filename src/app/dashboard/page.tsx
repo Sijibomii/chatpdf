@@ -25,7 +25,6 @@ export default function Dash() {
         .eq('email', user.email);
 
         if (error){ 
-          console.log('error', error)
           return
         }
         else if(userData.length === 0){
@@ -59,7 +58,6 @@ export default function Dash() {
         }
     }
     if(user){
-      console.log('fff')
       fetchUser()
     }
   },[user, userD])

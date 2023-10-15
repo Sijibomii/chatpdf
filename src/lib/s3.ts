@@ -20,7 +20,7 @@ export async function uploadToGoogleStorage(
             resumable: false,
         });
 
-        // console.log(file.buffer)
+
         const arrayBuffer = await new Response(file).arrayBuffer();
         const fileBuffer = Buffer.from(arrayBuffer);
 

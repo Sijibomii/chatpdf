@@ -5,6 +5,7 @@ import { supabase } from "@/lib/initSupabase";
 export const runtime = "edge";
 
 export const POST = async (req: Request) => {
+
   const { chatId } = await req.json();
 
   const _messages = await supabase
@@ -12,5 +13,5 @@ export const POST = async (req: Request) => {
         .select('*')
         .eq('chat_id', chatId);
   
-  return NextResponse.json(_messages);
+  return NextResponse.json(_messages.data); 
 };

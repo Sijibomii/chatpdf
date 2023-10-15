@@ -25,13 +25,12 @@ type PDFPage = {
 
 export async function loadGoogleCloudStorageIntoPinecone(fileKey: string) {
 
-  console.log("downloading from GoogleCloudStorage into file system");
   
   const file_name = await downloadFromGoogleCloudStorage(fileKey);
   if (!file_name) {
     throw new Error("could not download from google cloud");
   }
-  console.log("loading pdf into memory" + file_name);
+
   const loader = new PDFLoader(file_name);
   const pages = (await loader.load()) as PDFPage[];
 
@@ -47,7 +46,7 @@ export async function loadGoogleCloudStorageIntoPinecone(fileKey: string) {
   // namspaces are not free
   // const namespace = pineconeIndex.namespace(convertToAscii(fileKey));
   // await namespace.upsert(vectors);
-  console.log("inserting vectors into pinecone");
+
   await pineconeIndex.upsert(vectors);
 
   return documents[0];

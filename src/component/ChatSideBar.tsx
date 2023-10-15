@@ -9,7 +9,7 @@ import { cn } from "@/lib/utils";
 
 type Props = {
   chats: any[];
-  chatId: number
+  chatId: any
 };
 
 const ChatSideBar = ({ chats, chatId }: Props) => {
@@ -35,7 +35,7 @@ const ChatSideBar = ({ chats, chatId }: Props) => {
             >
               <MessageCircle className="mr-2" />
               <p className="w-full overflow-hidden text-sm truncate whitespace-nowrap text-ellipsis">
-                {chat.pdfName}
+                {chat.pdf_name}
               </p>
             </div>
           </Link>

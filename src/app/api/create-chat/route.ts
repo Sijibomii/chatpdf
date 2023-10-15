@@ -17,7 +17,7 @@ export async function POST(req: Request, res: Response) {
   try {
     const body = await req.json();
     const { file_key, file_name } = body;
-    console.log(file_key, file_name);
+
     await loadGoogleCloudStorageIntoPinecone(file_key);
 
     const { data: chatData, error } = await supabase
@@ -30,7 +30,7 @@ export async function POST(req: Request, res: Response) {
                   })
             .select()
             .single();
-    console.log(chatData)
+
     return NextResponse.json(
       {
         chat_id: chatData.id,

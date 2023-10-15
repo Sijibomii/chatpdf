@@ -89,16 +89,15 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
 
     useEffect(() =>{
         if (!user) {
-            console.log("getting user details from hanko")
+
             getUser(`${process.env.NEXT_PUBLIC_HANKO_API_URL}/me`)
             .then((userr: any) => {
                 setUser(userr)
                 // set zustand here
-                console.log(userr)
                 useUserStore.getState().setUser(userr)
             })
             .catch((err) => {
-                console.log(err)
+                console.error(err)
               })
               .finally(() => {
                 isLoading.current = false;

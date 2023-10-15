@@ -19,7 +19,7 @@ export const useUserStore = create(
 
 // user details comming from supabase
 export const useUserDataStore = create(
-  combine(
+  combine( 
     {
       user: null,
     },

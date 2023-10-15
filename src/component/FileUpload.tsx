@@ -58,7 +58,7 @@ const FileUpload = () => {
         setUploading(true);
         const formData = new FormData(); 
         formData.set("file", file);
-        console.log(file)
+   
         const data: any = await fetch("/api/upload", {
                 method: "POST",
                 body: formData,   
@@ -70,14 +70,14 @@ const FileUpload = () => {
               return response.json(); 
             })
             .then((data) => {
-                console.log("File uploaded successfully:", data);
+
                 return data
               })
             .catch((error) => {
               console.error("Error uploading file:", error);
             });
 
-        console.log("meow", data);
+
         if (!data?.file_key || !data.file_name) {
           toast.error("Something went wrong");
           return;
@@ -93,7 +93,7 @@ const FileUpload = () => {
           },
         });
       } catch (error) {
-        console.log(error);
+
       } finally {
         setUploading(false);
       }

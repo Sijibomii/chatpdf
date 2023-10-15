@@ -5,18 +5,21 @@ import { useChat } from "ai/react";
 import { Button } from "@/components/ui/button";
 import { Send } from "lucide-react";
 import MessageList from "./MessageList";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";  
 // import { Message } from "ai";
 
-type Props = { chatId: number };
-
+type Props = { chatId: any };
+  
 const ChatComponent = ({ chatId }: Props) => {
-  const { data, isLoading } = useQuery({
+  const { data, isLoading } = useQuery({ 
+
     queryKey: ["chat", chatId], 
     queryFn: async () => {
+
         const data = {
             chatId,
           };
+
           const response = await fetch("/api/get-messages", {
             method: "POST",
             headers: {
@@ -36,7 +39,7 @@ const ChatComponent = ({ chatId }: Props) => {
   });  
 
   const { input, handleInputChange, handleSubmit, messages } = useChat({
-    api: "/api/chat",
+    api: "/api/chat", 
     body: {
       chatId,
     },
@@ -51,6 +54,9 @@ const ChatComponent = ({ chatId }: Props) => {
       });
     }
   }, [messages]);
+
+  
+
   return (
     <div
       className="relative max-h-screen overflow-scroll"

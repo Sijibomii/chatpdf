@@ -13,21 +13,25 @@ export async function getMatchesFromEmbeddings(
     });
     // index
     const pineconeIndex = await client.index("chatpdf");
-    const namespace = pineconeIndex.namespace(convertToAscii(fileKey));
-    const queryResult = await namespace.query({
-      topK: 5,
+  
+    const queryResult = await pineconeIndex.query({
+      topK: 5, 
       vector: embeddings,
       includeMetadata: true,
     });
+
     return queryResult.matches || [];
+
   } catch (error) {
-    console.log("error querying embeddings", error);
+    console.error("error querying embeddings", error);
     throw error;
   }
 }
 
 export async function getContext(query: string, fileKey: string) {
+
   const queryEmbeddings = await getEmbeddings(query);
+
   const matches = await getMatchesFromEmbeddings(queryEmbeddings, fileKey);
 
   const qualifyingDocs = matches.filter(

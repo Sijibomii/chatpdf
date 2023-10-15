@@ -1,15 +1,13 @@
 "use client"
 
-import ChatComponent from "@/components/ChatComponent";
-import ChatSideBar from "@/components/ChatSideBar";
-import PDFViewer from "@/components/PDFViewer";
-import { db } from "@/lib/db";
-import { chats } from "@/lib/db/schema";
-import { checkSubscription } from "@/lib/subscription";
-import { auth } from "@clerk/nextjs";
-import { eq } from "drizzle-orm";
+import Layout from "@/component/Layout";
+import ChatComponent from "@/component/ChatComponent";
+import ChatSideBar from "@/component/ChatSideBar";
+import PDFViewer from "@/component/PDFViewer";
 import { redirect } from "next/navigation";
-import React from "react";
+import { useUserDataStore } from "@/lib/userStore";
+import { supabase } from "@/lib/initSupabase";
+import React, { useEffect, useState } from "react";
 
 type Props = {
   params: {
@@ -17,39 +15,66 @@ type Props = {
   };
 };
 
-const ChatPage = ({ params: { chatId } }: Props) => {
-  const { userId } = await auth();
-  if (!userId) {
-    return redirect("/sign-in");
-  }
-  const _chats = await db.select().from(chats).where(eq(chats.userId, userId));
-  if (!_chats) {
-    return redirect("/");
-  }
-  if (!_chats.find((chat) => chat.id === parseInt(chatId))) {
-    return redirect("/");
-  }
+const ChatPage = ({ params }: Props) => { 
 
-  const currentChat = _chats.find((chat) => chat.id === parseInt(chatId));
-  const isPro = await checkSubscription();
+  // get user id from zustand
+  const { chatId } = params;
+  const { user } = useUserDataStore();
+
+  const [chats_, setChats] = useState<any[]>([]);
+
+  const [currentChat_, setCurrentChat] = useState<any>();
+
+  useEffect(()=>{
+    if (!user) {
+      return redirect("/");
+    }
+
+    const fetchChats = async () => {
+
+      const _chats = await supabase
+        .from('chats')
+        .select('*')
+        .eq('user_id', user[0].hanko_id);
+      
+        if (!_chats) {
+          return redirect("/");
+        }
+
+        setChats(_chats.data)
+
+        // if (!_chats.find((chat: any) => chat.id === parseInt(chatId))) {
+        //   return redirect("/");
+        // }
+        const currentChat = _chats.data.find((chat: any) => chat.id === chatId);
+
+        setCurrentChat(currentChat)
+    }
+
+    fetchChats();
+
+  },[chatId, user])
+
 
   return (
-    <div className="flex max-h-screen overflow-scroll">
+    <Layout>
+      <div className="flex max-h-screen overflow-scroll">
       <div className="flex w-full max-h-screen overflow-scroll">
         {/* chat sidebar */}
         <div className="flex-[1] max-w-xs">
-          <ChatSideBar chats={_chats} chatId={parseInt(chatId)} isPro={isPro} />
+          <ChatSideBar chats={chats_} chatId={chatId} />
         </div>
         {/* pdf viewer */}
         <div className="max-h-screen p-4 oveflow-scroll flex-[5]">
-          <PDFViewer pdf_url={currentChat?.pdfUrl || ""} />
+          <PDFViewer pdf_url={currentChat_?.pdf_url || ""} />
         </div>
         {/* chat component */}
         <div className="flex-[3] border-l-4 border-l-slate-200">
-          <ChatComponent chatId={parseInt(chatId)} />
+          <ChatComponent chatId={chatId} />
         </div>
       </div>
     </div>
+    </Layout>
   );
 };
 
