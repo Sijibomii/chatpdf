@@ -57,6 +57,7 @@ const FileUpload = () => {
       try {
         setUploading(true);
         const formData = new FormData(); 
+        
         formData.set("file", file);
    
         const data: any = await fetch("/api/upload", {

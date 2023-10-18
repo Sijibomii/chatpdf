@@ -7,23 +7,30 @@ export async function uploadToGoogleStorage(
 ): Promise<{ file_key: string; file_name: string }> {
   return new Promise(async (resolve, reject) => {
     try {
-        const filePath = './cred.json'; 
-        
-        fs.access(filePath, fs.constants.F_OK, (err) => {
-          if (err) {
-            // file does not exist 
-            const base64Data = process.env.GOOGLE_SERVICE_CREDENTIAL!
-            // Decode the base64 data to a buffer.
-            const rawData = Buffer.from(base64Data, 'base64');
-            // Parse the buffer as JSON.
-            const jsonData = JSON.parse(rawData.toString());
-            
-            fs.writeFileSync(filePath, JSON.stringify(jsonData, null, 2));
-          }
-        });
+
+        // file does not exist 
+        const base64Data = process.env.GOOGLE_SERVICE_CREDENTIAL!
+        // Decode the base64 data to a buffer.
+        const rawData = Buffer.from(base64Data, 'base64');
+        // Parse the buffer as JSON.
+        const jsonData = JSON.parse(rawData.toString());
+      
+        const googleStorageCredentials = {
+          type: jsonData["type"],
+          project_id: jsonData["project_id"],
+          private_key_id: jsonData["private_key_id"],
+          private_key: jsonData["private_key"],
+          client_email: jsonData["client_email"],
+          client_id: jsonData["client_id"],
+          auth_uri: jsonData["auth_uri"],
+          token_uri: jsonData["token_uri"],
+          auth_provider_x509_cert_url: jsonData["auth_provider_x509_cert_url"],
+          client_x509_cert_url: jsonData["client_x509_cert_url"],
+          universe_domain: jsonData["universe_domain"]
+        };
 
         const storage = new Storage({
-            keyFilename: filePath,
+            credentials: googleStorageCredentials,
             projectId: "winged-ratio-399207"
         });
 
