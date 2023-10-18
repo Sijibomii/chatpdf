@@ -31,7 +31,7 @@ export async function loadGoogleCloudStorageIntoPinecone(fileKey: string) {
     throw new Error("could not download from google cloud");
   }
 
-  const loader = new PDFLoader(file_name);
+  const loader = new PDFLoader(file_name as string);
   const pages = (await loader.load()) as PDFPage[];
 
   // spliting pdf into segments

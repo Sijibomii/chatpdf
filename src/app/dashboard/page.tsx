@@ -12,9 +12,10 @@ import FileUpload from "@/component/FileUpload";
 // post should go in here
 export default function Dash() {
 
-  const { user } = useUserStore();
+  const { user: userr } = useUserStore();
 
-  const { userD } = useUserDataStore()
+  const user = userr as unknown as any;
+  const { user: userD } = useUserDataStore()
 
   const [userDta, setUserData] = useState<any>();
   useEffect(() => {
@@ -22,7 +23,7 @@ export default function Dash() {
       const { data: userData, error } = await supabase
         .from('users')
         .select('*')
-        .eq('email', user.email);
+        .eq('email', user!.email);
 
         if (error){ 
           return
@@ -38,7 +39,7 @@ export default function Dash() {
             .select()
             .single()
 
-          if (insertError.code){
+          if (insertError!.code){
             return
           }
           setUserData(insertedUser)

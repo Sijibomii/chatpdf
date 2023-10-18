@@ -19,8 +19,9 @@ const ChatPage = ({ params }: Props) => {
 
   // get user id from zustand
   const { chatId } = params;
-  const { user } = useUserDataStore();
+  const { user: userr } = useUserDataStore();
 
+  const user = userr as unknown as any[];
   const [chats_, setChats] = useState<any[]>([]);
 
   const [currentChat_, setCurrentChat] = useState<any>();
@@ -41,12 +42,12 @@ const ChatPage = ({ params }: Props) => {
           return redirect("/");
         }
 
-        setChats(_chats.data)
+        setChats(_chats.data as unknown as any[])
 
         // if (!_chats.find((chat: any) => chat.id === parseInt(chatId))) {
         //   return redirect("/");
         // }
-        const currentChat = _chats.data.find((chat: any) => chat.id === chatId);
+        const currentChat = _chats!.data!.find((chat: any) => chat.id === chatId);
 
         setCurrentChat(currentChat)
     }

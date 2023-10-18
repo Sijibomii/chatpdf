@@ -2,11 +2,6 @@ import formidable from 'formidable';
 import { NextResponse } from 'next/server';
 import { uploadToGoogleStorage } from "@/lib/s3";
 
-export const config = {
-    api: {
-      bodyParser: false, 
-    },
-};
 
 export async function POST(req: Request, _: Response) {
 

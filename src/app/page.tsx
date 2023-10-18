@@ -2,6 +2,7 @@
 
 import { useEffect, useCallback, useState } from "react";
 import { useRouter } from "next/navigation";
+// @ts-ignore
 import { register, Hanko } from "@teamhanko/hanko-elements";
 import "./global.css"
 
@@ -14,6 +15,7 @@ export default function Home() {
   const [hanko, setHanko] = useState<Hanko>();
 
   useEffect(() => {
+    // @ts-ignore
     import("@teamhanko/hanko-elements").then(({ Hanko }) =>
       setHanko(new Hanko(hankoApi))
     );
@@ -34,8 +36,8 @@ export default function Home() {
   );
  
   useEffect(() => {
-    register(hankoApi).catch((error) => {
-      // handle error
+    register(hankoApi as string).catch((error: any) => {
+      console.log(error)
     });
   }, []);
 //  

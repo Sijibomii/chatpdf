@@ -22,7 +22,7 @@ export async function POST(req: Request) {
     .select('*')
     .eq('id', chatId);
 
-    const _chats = __chats.data
+    const _chats = __chats.data || []
 
     if (_chats.length != 1) {
       return NextResponse.json({ error: "chat not found" }, { status: 404 });
