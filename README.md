@@ -1,5 +1,8 @@
 # CHATPDF
 
+https://github.com/Sijibomii/chatpdf/assets/73986352/b7d25cb8-ef60-4830-a9f3-c8a1672e4e07
+
+
 ## Overview
 
 This project is designed to provide a seamless chat experience where users can upload PDF files, create chats around them, and interact with an AI assistant. The AI assistant uses the OpenAI API to generate responses based on the chat context.
