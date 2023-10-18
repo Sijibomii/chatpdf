@@ -20,6 +20,7 @@
     "ai": "^2.2.15",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.0.0",
+    "custom-event-polyfill": "^1.0.7",
     "formidable": "^3.5.1",
     "formik": "^2.4.5",
     "jose": "^4.15.3",

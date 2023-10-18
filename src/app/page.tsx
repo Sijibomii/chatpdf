@@ -1,5 +1,6 @@
 "use client"
 
+import 'custom-event-polyfill';
 import { useEffect, useCallback, useState } from "react";
 import { useRouter } from "next/navigation";
 // @ts-ignore
@@ -9,7 +10,6 @@ import "./global.css"
 const hankoApi = process.env.NEXT_PUBLIC_HANKO_API_URL;
 
 export default function Home() {
-
   const router = useRouter();
 
   const [hanko, setHanko] = useState<Hanko>();
@@ -24,7 +24,6 @@ export default function Home() {
   const redirectAfterLogin = useCallback(() => {
     // successfully logged in, redirect to a page in your application
     router.replace("/dashboard");
-  
   }, [router]);
  
   useEffect(
@@ -35,12 +34,12 @@ export default function Home() {
     [hanko, redirectAfterLogin]
   );
  
-  useEffect(() => {
-    register(hankoApi as string).catch((error: any) => {
-      console.log(error)
-    });
-  }, []);
-//  
+  // useEffect(() => {
+  //   register(hankoApi as string).catch((error: any) => {
+  //     console.log(error)
+  //   });
+  // }, []);
+ 
   return (
     <div className="h-screen w-screen flex items-center justify-center">
       <hanko-auth />
