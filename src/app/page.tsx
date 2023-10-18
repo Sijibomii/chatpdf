@@ -4,10 +4,12 @@ import 'custom-event-polyfill';
 import { useEffect, useCallback, useState } from "react";
 import { useRouter } from "next/navigation";
 // @ts-ignore
-import { register, Hanko } from "@teamhanko/hanko-elements";
+import { Hanko } from "@teamhanko/hanko-elements";
 import "./global.css"
 
 const hankoApi = process.env.NEXT_PUBLIC_HANKO_API_URL;
+
+export const dynamic = "force-dynamic";
 
 export default function Home() {
   const router = useRouter();
@@ -34,11 +36,16 @@ export default function Home() {
     [hanko, redirectAfterLogin]
   );
  
-  // useEffect(() => {
-  //   register(hankoApi as string).catch((error: any) => {
-  //     console.log(error)
-  //   });
-  // }, []);
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      import("@teamhanko/hanko-elements").then(({ register }) =>
+        register(hankoApi as string).catch((error: any) => {
+          console.log(error);
+        })
+      );
+      
+    }
+  }, []);
  
   return (
     <div className="h-screen w-screen flex items-center justify-center">
