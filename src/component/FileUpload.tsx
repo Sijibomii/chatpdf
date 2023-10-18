@@ -33,6 +33,7 @@ const FileUpload = () => {
           });
           if (!response.ok) {
             // Handle the error (e.g., throw an error or return an error response)
+            console.log("file", response)
             throw new Error("Network response was not ok");
           }
           
@@ -64,6 +65,7 @@ const FileUpload = () => {
             })
             .then((response) => {
               if (!response.ok) {
+                console.log("fileee", response)
                 throw new Error("Network response was not ok");
               }
               return response.json(); 
