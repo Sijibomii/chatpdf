@@ -60,7 +60,7 @@ const FileUpload = () => {
         formData.set("file", file);
    
         const data: any = await fetch("/api/upload", {
-                method: "POST",
+                method: "POST", 
                 body: formData,   
             })
             .then((response) => {
